@@ -1,0 +1,7 @@
+ctransformers
+sentence-transformers
+langchain
+flask
+pypdf
+python-dotenv
+annoy
