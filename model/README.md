@@ -10,5 +10,5 @@ Example command to download and move the file:
 
 ```bash
 mkdir -p models
-wget https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/tree/ma/llama-2-7b-chat.ggmlv3.q4_0.bin -O models/llama-2-7b-chat.ggmlv3.q4_0.bin
+wget https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/tree/main/llama-2-7b-chat.ggmlv3.q4_0.bin -O models/llama-2-7b-chat.ggmlv3.q4_0.bin
 
