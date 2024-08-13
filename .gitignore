@@ -2,3 +2,4 @@
 *.bin
 .vscode/
 medical_chatbot_annoy.index
+\vectstore
