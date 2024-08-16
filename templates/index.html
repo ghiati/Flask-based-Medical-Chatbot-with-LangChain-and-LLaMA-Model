@@ -3,34 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LangChain QA App</title>
+    <title>AI Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .chat-box {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            height: 400px;
+        }
+        .user-input {
+            display: flex;
+            gap: 10px;
+        }
+        .user-input input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .user-input button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+        .user-input button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .message.user {
+            background-color: #007bff;
+            color: #fff;
+            text-align: right;
+        }
+        .message.ai {
+            background-color: #e9ecef;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-    <h1>LangChain Question Answering</h1>
-    <form id="promptForm">
-        <label for="prompt">Enter your question:</label><br>
-        <input type="text" id="prompt" name="prompt" required><br><br>
-        <input type="submit" value="Ask">
-    </form>
-    <h2>Response:</h2>
-    <p id="response"></p>
+    <div class="container">
+        <h1>Chat with AI</h1>
+        <div class="chat-box" id="chatBox">
+            <!-- Messages will appear here -->
+        </div>
+        <div class="user-input">
+            <input type="text" id="userInput" placeholder="Type your question here..." />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
 
     <script>
-        document.getElementById('promptForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const prompt = document.getElementById('prompt').value;
-            const responseElement = document.getElementById('response');
+        function addMessage(content, sender) {
+            const chatBox = document.getElementById('chatBox');
+            const message = document.createElement('div');
+            message.className = `message ${sender}`;
+            message.textContent = content;
+            chatBox.appendChild(message);
+            chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
+        }
 
-            const response = await fetch('/ask', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `prompt=${prompt}`,
-            });
+        async function sendMessage() {
+            const userInput = document.getElementById('userInput');
+            const prompt = userInput.value.trim();
+            if (prompt) {
+                addMessage(prompt, 'user');
+                userInput.value = '';
 
-            const data = await response.json();
-            responseElement.textContent = data.response;
+                const response = await fetch('/ask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `prompt=${encodeURIComponent(prompt)}`,
+                });
+
+                const data = await response.json();
+                addMessage(data.response, 'ai');
+            }
+        }
+
+        document.getElementById('userInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                sendMessage();
+            }
         });
     </script>
 </body>

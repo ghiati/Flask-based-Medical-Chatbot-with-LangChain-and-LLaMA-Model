@@ -47,7 +47,7 @@ Follow these instructions:
 1. Carefully read the context and identify the key information relevant to the question.
 2. Summarize the relevant parts of the context in your mind before formulating your answer.
 3. Ensure your answer is factually accurate based on the provided context.
-4. If you are unsure about any part of the answer, it's better to say "I don't know" than to provide an incorrect answer.
+4. If you are unsure about any part of the answer, it's better to say "I don't know I can provide only Medical information " than to provide an incorrect answer.
 5. Keep your answer concise and to the point.
 
 Context: {context}
@@ -64,7 +64,7 @@ model = CTransformers(model="/home/mg/lifeCare/model/llama-2-7b-chat.ggmlv3.q2_K
 
 qa = RetrievalQA.from_chain_type(llm=model,
                                  chain_type='stuff',
-                                 retriever=db.as_retriever(search_kwargs={'k': 1}),
+                                 retriever=db.as_retriever(search_kwargs={'k': 2}),
                                  return_source_documents=True,
                                  chain_type_kwargs=chain_type_kwargs
                                  )
